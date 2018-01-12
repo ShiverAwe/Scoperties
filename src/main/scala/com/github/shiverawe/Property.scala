@@ -9,7 +9,7 @@ case class Property
   def apply: String =
     value.getOrElse(default)
 
-  def <=(value: String) =
+  def :=(value: String) =
     this.value = Some(value)
 
   override def toString: String =
