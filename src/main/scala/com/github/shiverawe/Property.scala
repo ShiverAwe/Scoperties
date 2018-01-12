@@ -3,14 +3,15 @@ package com.github.shiverawe
 case class Property
 (
   key: String,
-  default: String
-) {
-  def register(options: AbstractOptions): _root_.com.github.shiverawe.Property = ??
-
+  default: String = "",
   var value: Option[String] = None
+) {
+  def apply: String =
+    value.getOrElse(default)
 
-  def apply: String = value.getOrElse(default)
-
-  def <= (value: String): Unit =
+  def <=(value: String) =
     this.value = Some(value)
+
+  override def toString: String =
+    s"(${key}, ${apply})"
 }
