@@ -12,9 +12,12 @@ case class Property
   def :=(value: String) =
     this.value = Some(value)
 
-  def is(value: String): Boolean =
+  def ==(value: String): Boolean =
     apply() == value
 
+  def !=(value: String): Boolean =
+    apply() != value
+
   override def toString: String =
-    s"(${key}, ${apply})"
+    apply()
 }

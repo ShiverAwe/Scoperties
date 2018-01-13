@@ -10,6 +10,3 @@ case class TestOptions
 ) extends AbstractOptions {
   registerProperty(host, port, mode)
 }
-
-
-
