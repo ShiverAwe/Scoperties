@@ -1,6 +1,8 @@
-package com.github.shiverawe
+package scoperties
 
-case class AppOptions
+import com.github.shiverawe.{AbstractOptions, Property}
+
+case class TestOptions
 (
   host: Property = Property("host", "localhost"),
   port: Property = Property("port", "7345")

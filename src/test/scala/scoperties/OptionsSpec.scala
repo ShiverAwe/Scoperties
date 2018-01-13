@@ -1,0 +1,5 @@
+package scoperties
+
+class OptionsSpec {
+
+}
