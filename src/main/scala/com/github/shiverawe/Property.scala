@@ -6,15 +6,53 @@ case class Property
   default: String = "",
   var value: Option[String] = None
 ) {
+  /**
+    * Get the value
+    *
+    * @return effective value of property
+    *         "effective value" = `value`, or `default` if `value` is empty
+    */
   def apply(): String =
     value.getOrElse(default)
 
-  def :=(value: String) =
+  /**
+    * Sets new value of property
+    *
+    * @param value to be set
+    */
+  def :=(value: String): Unit =
     this.value = Some(value)
 
+  /**
+    * Sets effective value to default
+    */
+  def setDefault(): Unit =
+    this.value = None
+
+  /**
+    * Lets you see if value is default
+    *
+    * @return `true` if effective value equals default
+    */
+  def isDefault(): Boolean =
+    apply() == default
+
+  /**
+    * Compares effective value with argument
+    *
+    * @param value string to be compared with effective value
+    * @return `true` if given value equals effective value, false otherwise
+    */
   def ==(value: String): Boolean =
     apply() == value
 
+
+  /**
+    * This method is opposite to `==`
+    *
+    * @param value string to be compared with effective value
+    * @return `false` if given value equals effective value, `true` otherwise
+    */
   def !=(value: String): Boolean =
     apply() != value
 
