@@ -1,6 +1,6 @@
 package scoperties
 
-import com.github.shiverawe.{Scoptions, Property}
+import com.github.shiverawe.{Property, Scoptions}
 
 case class TestOptions() extends Scoptions {
   val host: Property = Property("host", "localhost")

@@ -58,4 +58,8 @@ abstract class Scoptions {
     if (kv.length != 2) throw new IllegalArgumentException(s"$argument does not match pattern `key=value`")
     (kv(0), kv(1))
   }
+
+  override def toString: String = {
+    registeredProperties.toString()
+  }
 }
