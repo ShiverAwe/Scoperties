@@ -46,7 +46,6 @@ case class Property
   def ==(value: String): Boolean =
     apply() == value
 
-
   /**
     * This method is opposite to `==`
     *
