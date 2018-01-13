@@ -9,7 +9,9 @@ class PropertySpec extends FlatSpec {
   val NEW_VALUE = "newvalue"
   val UNKNOWN_VALUE = "unknown"
 
-  "Property" should "do work" in {
+  implicit val target = None
+
+  "Property" should "get with `apply` and and set with `:=`" in {
     val property = Property(KEY, DEFAULT_VALUE)
     assert(property() == DEFAULT_VALUE)
 

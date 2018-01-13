@@ -5,7 +5,14 @@ case class Property
   key: String,
   default: String = "",
   var value: Option[String] = None
+)(
+  implicit val target: Option[Scoptions]
 ) {
+
+  /* Constructor */ {
+    if (target.isDefined) target.get.registerProperties(this)
+  }
+
   /**
     * Get the value
     *

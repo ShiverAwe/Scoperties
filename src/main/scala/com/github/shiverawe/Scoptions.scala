@@ -10,6 +10,9 @@ import scala.collection.mutable
   *  - parse and apply command line arguments to properties
   */
 abstract class Scoptions {
+
+  implicit val target = Some(this)
+
   protected val registeredProperties = mutable.Map[String, Property]()
 
   /**
@@ -39,7 +42,7 @@ abstract class Scoptions {
     *
     * @param properties properties to be managed by this class
     */
-  protected def registerProperty(properties: Property*) = { //TODO : Rename to ..ties
+  def registerProperties(properties: Property*) = { //TODO : Rename to ..ties
     //registeredProperties += (property.key -> property)
     properties.foreach(p => registeredProperties += (p.key -> p))
   }
