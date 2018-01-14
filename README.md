@@ -24,7 +24,7 @@ testOptions.applyArguments(
 ```
 Result:
 ```
-(mode -> test, host -> newhost, port -> 7345)
+mode=test host=newhost port=7345 
 ```
 
 #### Using properties as common variables
@@ -38,5 +38,3 @@ testOptions.host == "dsfksdf" // false
 testOptions.host != "newhost" // false
 testOptions.host != "nzhfuid" // true
 ```
-
-Result

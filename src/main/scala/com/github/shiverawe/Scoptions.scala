@@ -11,8 +11,14 @@ import scala.collection.mutable
   */
 abstract class Scoptions {
 
+  /**
+    * Properties defined in inherited classes use this value to register
+    */
   implicit val target = Some(this)
 
+  /**
+    * Collection of properties, registered as dependent
+    */
   protected val registeredProperties = mutable.Map[String, Property]()
 
   /**
@@ -42,7 +48,7 @@ abstract class Scoptions {
     *
     * @param properties properties to be managed by this class
     */
-  def registerProperties(properties: Property*) = { //TODO : Rename to ..ties
+  def registerProperties(properties: Property*) = {
     //registeredProperties += (property.key -> property)
     properties.foreach(p => registeredProperties += (p.key -> p))
   }
@@ -60,6 +66,11 @@ abstract class Scoptions {
   }
 
   override def toString: String = {
-    registeredProperties.toString()
+    var string = ""
+    // TODO: optimization
+    registeredProperties.foreach(p => {
+      string += s"${p._1}=${p._2} "
+    })
+    string
   }
 }

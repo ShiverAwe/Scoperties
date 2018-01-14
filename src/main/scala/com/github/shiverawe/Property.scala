@@ -9,7 +9,8 @@ case class Property
   implicit val target: Option[Scoptions]
 ) {
 
-  /* Constructor */ {
+  /* Constructor */
+  {
     if (target.isDefined) target.get.registerProperties(this)
   }
 
