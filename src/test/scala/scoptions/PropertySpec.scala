@@ -1,6 +1,6 @@
 package scoptions
 
-import com.github.shiverawe.Property
+import com.github.shiverawe.scoptions.Property
 import org.scalatest.FlatSpec
 
 class PropertySpec extends FlatSpec {
