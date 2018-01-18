@@ -13,8 +13,7 @@ case class ExperimentalOptions
 object ExperimentalArgumentsApplier extends CmdArgumentsApplier[ExperimentalOptions] {
   override val prefix = "exp_"
 
-  override def withArgument(options: ExperimentalOptions, key: String, value: String): Option[ExperimentalOptions] = {
-    Some {
+  override def withArgument(options: ExperimentalOptions, key: String, value: String): ExperimentalOptions = {
       key match {
         case "topic" => options.copy(topic = value)
         case "url" => options.copy(url = value)
@@ -22,9 +21,8 @@ object ExperimentalArgumentsApplier extends CmdArgumentsApplier[ExperimentalOpti
         case "delimiter" => options.copy(delimiter = value)
         case "ttl" => options.copy(ttl = value.toInt)
         case "size" => options.copy(size = value.toFloat)
-        case default => return None
+        case _ => options
       }
-    }
   }
 
 }
