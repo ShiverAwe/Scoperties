@@ -20,6 +20,13 @@ case class Property
     * @return effective value of property
     *         "effective value" = `value`, or `default` if `value` is empty
     */
+  def get(): String =
+    value.getOrElse(default)
+
+  /**
+    * Alias for `get` method
+    * @see `get`
+    */
   def apply(): String =
     value.getOrElse(default)
 
@@ -28,8 +35,15 @@ case class Property
     *
     * @param value to be set
     */
-  def :=(value: String): Unit =
+  def set(value: String): Unit =
     this.value = Some(value)
+
+  /**
+    * Alias for `set` method
+    * @see `set`
+    */
+  def :=(value: String): Unit =
+    set(value)
 
   /**
     * Sets effective value to default
