@@ -11,7 +11,7 @@ case class ExperimentalOptions
 ) {}
 
 object ExperimentalArgumentsApplier extends CmdArgumentsApplier[ExperimentalOptions] {
-  override val prefix = "hdfs_"
+  override val prefix = "exp_"
 
   override def withArgument(options: ExperimentalOptions, key: String, value: String): Option[ExperimentalOptions] = {
     Some {

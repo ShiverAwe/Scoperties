@@ -15,6 +15,11 @@ case class ApplierState[O]
   var used: List[String] = List.empty,
   var ignored: List[String] = List.empty
 ) {
+
+  /**
+    * Moves property to `used` list
+    * @param argument
+    */
   def setUsed(argument: String): Unit = {
     if (!unused.contains(argument)) throw new NoSuchElementException(s"$argument")
     unused = unused.filter(_ != argument)
@@ -32,13 +37,9 @@ case class ApplierState[O]
     ignored = ignored ++ newIgnored
   }
 
-  @deprecated("Unused. Can be deleted")
-  def ignore(argument: String): Unit = {
-    if (!unused.contains(argument)) throw new NoSuchElementException(s"$argument")
-    unused = unused.filter(_ != argument)
-    ignored = argument :: used
-  }
-
+  /**
+    * Before delegating to another applier all ignored arguments should be restored in `unused` list
+    */
   def restoreIgnored(): Unit = {
     unused = unused ++ ignored
     ignored = List.empty
