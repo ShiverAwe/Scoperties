@@ -1,4 +1,4 @@
-package scoperties
+package scoptions
 
 import org.scalatest.FlatSpec
 

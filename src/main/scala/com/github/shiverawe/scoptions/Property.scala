@@ -1,4 +1,4 @@
-package com.github.shiverawe
+package com.github.shiverawe.scoptions
 
 case class Property
 (

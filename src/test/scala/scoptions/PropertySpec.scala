@@ -1,4 +1,4 @@
-package scoperties
+package scoptions
 
 import com.github.shiverawe.Property
 import org.scalatest.FlatSpec
