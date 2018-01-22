@@ -12,9 +12,9 @@ class OptionsSpec extends FlatSpec {
       "mode=test"
     ))
 
-    assert(options.host == "newhost")
-    assert(options.port == "8123")
-    assert(options.mode == "test")
+    assert(options.host() == "newhost")
+    assert(options.port() == 8123)
+    assert(options.mode() == "test")
   }
 
   it should "throw exception when trying to apply incorrect argument" in {

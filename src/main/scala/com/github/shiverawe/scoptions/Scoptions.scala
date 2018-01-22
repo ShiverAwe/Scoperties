@@ -19,7 +19,7 @@ abstract class Scoptions {
   /**
     * Collection of properties, registered as dependent
     */
-  protected val registeredProperties = mutable.Map[String, Property]()
+  protected val registeredProperties = mutable.Map[String, Property[_]]()
 
   /**
     * Allows to parse and apply command line arguments to all registered properties
@@ -31,7 +31,7 @@ abstract class Scoptions {
       val kv = parseArgument(argument)
       if (!registeredProperties.contains(kv._1))
         throw new NoSuchElementException(s"Unknown property `${kv._1}`")
-      registeredProperties(kv._1) := kv._2
+      registeredProperties(kv._1).fromString(kv._2)
     })
   }
 
@@ -48,7 +48,7 @@ abstract class Scoptions {
     *
     * @param properties properties to be managed by this class
     */
-  def registerProperties(properties: Property*) = {
+  def registerProperties(properties: Property[_]*) = {
     //registeredProperties += (property.key -> property)
     properties.foreach(p => registeredProperties += (p.key -> p))
   }

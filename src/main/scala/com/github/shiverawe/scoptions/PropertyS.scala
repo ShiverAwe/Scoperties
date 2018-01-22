@@ -1,82 +1,34 @@
 package com.github.shiverawe.scoptions
 
-case class PropertyS
-(
-  key: String,
-  default: String = "",
-  var value: Option[String] = None
-)(
-  implicit val target: Option[Scoptions]
-) {
-
+abstract class AbstractProperty[P <: Any] extends Property[P] {
   /* Constructor */
   {
     if (target.isDefined) target.get.registerProperties(this)
   }
-
-  /**
-    * Get the value
-    *
-    * @return effective value of property
-    *         "effective value" = `value`, or `default` if `value` is empty
-    */
-  def get(): String =
-    value.getOrElse(default)
-
-  /**
-    * Alias for `get` method
-    * @see `get`
-    */
-  def apply(): String =
-    value.getOrElse(default)
-
-  /**
-    * Sets new value of property
-    *
-    * @param value to be set
-    */
-  def set(value: String): Unit =
-    this.value = Some(value)
-
-  /**
-    * Alias for `set` method
-    * @see `set`
-    */
-  def :=(value: String): Unit =
-    set(value)
-
-  /**
-    * Sets effective value to default
-    */
-  def setDefault(): Unit =
-    this.value = None
-
-  /**
-    * Lets you see if value is default
-    *
-    * @return `true` if effective value equals default
-    */
-  def isDefault(): Boolean =
-    apply() == default
-
-  /**
-    * Compares effective value with argument
-    *
-    * @param value string to be compared with effective value
-    * @return `true` if given value equals effective value, false otherwise
-    */
-  def ==(value: String): Boolean =
-    apply() == value
-
-  /**
-    * This method is opposite to `==`
-    *
-    * @param value string to be compared with effective value
-    * @return `false` if given value equals effective value, `true` otherwise
-    */
-  def !=(value: String): Boolean =
-    apply() != value
-
-  override def toString: String =
-    apply()
 }
+
+case class PropertyS(key: String, default: String = "")(implicit val target: Option[Scoptions]) extends AbstractProperty[String] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string
+}
+
+case class PropertyI(key: String, default: Int = 0)(implicit val target: Option[Scoptions]) extends AbstractProperty[Int] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toInt
+}
+
+case class PropertyF(key: String, default: Float = 0)(implicit val target: Option[Scoptions]) extends AbstractProperty[Float] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toFloat
+}
+
+case class PropertyL(key: String, default: Long = 0)(implicit val target: Option[Scoptions]) extends AbstractProperty[Long] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toLong
+}
+
+

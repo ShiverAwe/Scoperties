@@ -13,7 +13,7 @@ trait ApplierAssertion {
     * @param options Target of applying
     * @tparam P Target type
     */
-  def assertApplied[P](key: String, value: Any, getter: (P => Any))(implicit applier: CmdArgumentsApplier[P], options: P): Unit = {
+  def assertApplied[P <: AnyRef](key: String, value: Any, getter: (P => Any))(implicit applier: CmdArgumentsApplier[P], options: P): Unit = {
     val strgetter: P => String = getter(_).toString
     val strvalue = value.toString
     val newoptions = applier.apply(options, param(key, strvalue)).options
@@ -22,18 +22,18 @@ trait ApplierAssertion {
       s"Argument `$key` was not applied. Expected: `$strvalue`. Actual: `$newvalue`.")
   }
 
-  def assertAppliedB[P](key: String, getter: (P => Boolean))(implicit applier: CmdArgumentsApplier[P], options: P): Unit = {
+  def assertAppliedB[P <: AnyRef](key: String, getter: (P => Boolean))(implicit applier: CmdArgumentsApplier[P], options: P): Unit = {
     assertApplied(key, true, getter)(applier, options)
     assertApplied(key, false, getter)(applier, options)
   }
 
-  def assertAppliedS[P](key: String, getter: (P => String))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
+  def assertAppliedS[P <: AnyRef](key: String, getter: (P => String))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
     assertApplied(key, "ughndlamjvhsxlck", getter)(applier, options)
 
-  def assertAppliedI[P](key: String, getter: (P => Int))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
+  def assertAppliedI[P <: AnyRef](key: String, getter: (P => Int))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
     assertApplied(key, 5762347, getter)(applier, options)
 
-  def assertAppliedF[P](key: String, getter: (P => Float))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
+  def assertAppliedF[P <: AnyRef](key: String, getter: (P => Float))(implicit applier: CmdArgumentsApplier[P], options: P): Unit =
     assertApplied(key, 5762347, getter)(applier, options)
 
 }

@@ -70,7 +70,7 @@ trait CmdArgumentsApplier[O <: AnyRef] {
       }
   }
 
-  private def delegate[P](opt: P, slaveApplier: CmdArgumentsApplier[P], state: ApplierState[O]): ApplierState[P] = {
+  private def delegate[P <: AnyRef](opt: P, slaveApplier: CmdArgumentsApplier[P], state: ApplierState[O]): ApplierState[P] = {
     val delegatedState = state.copyWith(opt)
     slaveApplier.apply(delegatedState)
     state.copyFrom(delegatedState)

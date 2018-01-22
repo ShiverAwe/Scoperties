@@ -21,8 +21,8 @@ class Demo extends FlatSpec {
     testOptions.host := "newhost" // almost `=`
     println(testOptions.host()) // get value
     println(testOptions.host) // toString
-    testOptions.port := "newport" // set new value
-    println(testOptions.port == "newport") //true
-    println(testOptions.port == "dsfksdf") //false
+    testOptions.port := 17 // set new value
+    println(testOptions.port() == 17) //true
+    println(testOptions.port() == 58) //false
   }
 }
