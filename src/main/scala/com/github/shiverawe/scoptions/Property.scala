@@ -1,7 +1,7 @@
 package com.github.shiverawe.scoptions
 
 abstract class Property[P] extends PropertyLike[P] {
-  val target: Option[Scoptions]
+  val target: Option[PropertyPack]
 
   /* Constructor */
   {
@@ -9,26 +9,26 @@ abstract class Property[P] extends PropertyLike[P] {
   }
 }
 
-case class PropertyS(key: String, default: String = "")(implicit val target: Option[Scoptions]) extends Property[String] {
+case class PropertyS(key: String, default: String = "")(implicit val target: Option[PropertyPack]) extends Property[String] {
   override val contentType = "String"
 
   override def deserialize(string: String) = string
 }
 
-case class PropertyI(key: String, default: Int = 0)(implicit val target: Option[Scoptions]) extends Property[Int] {
-  override val contentType = "String"
+case class PropertyI(key: String, default: Int = 0)(implicit val target: Option[PropertyPack]) extends Property[Int] {
+  override val contentType = "Int"
 
   override def deserialize(string: String) = string.toInt
 }
 
-case class PropertyF(key: String, default: Float = 0)(implicit val target: Option[Scoptions]) extends Property[Float] {
-  override val contentType = "String"
+case class PropertyF(key: String, default: Float = 0)(implicit val target: Option[PropertyPack]) extends Property[Float] {
+  override val contentType = "Float"
 
   override def deserialize(string: String) = string.toFloat
 }
 
-case class PropertyL(key: String, default: Long = 0)(implicit val target: Option[Scoptions]) extends Property[Long] {
-  override val contentType = "String"
+case class PropertyL(key: String, default: Long = 0)(implicit val target: Option[PropertyPack]) extends Property[Long] {
+  override val contentType = "Long"
 
   override def deserialize(string: String) = string.toLong
 }

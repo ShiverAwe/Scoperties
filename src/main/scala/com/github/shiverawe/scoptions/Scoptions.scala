@@ -9,17 +9,35 @@ import scala.collection.mutable
   *  - bind properties to be managed by Scoptions
   *  - parse and apply command line arguments to properties
   */
-abstract class Scoptions {
-
+abstract class Scoptions(val outerScope: Scoptions) extends PropertyPack with ScoptionsPack {
   /**
     * Properties defined in inherited classes use this value to register
     */
-  implicit val target = Some(this)
+  implicit val target: Option[PropertyPack] = Some(this)
+
+  override def toString: String = {
+    var string = ""
+    // TODO: optimization
+    registeredProperties.foreach(p =>
+      string += s"${p._1}=${p._2} "
+    )
+    string
+  }
+}
+
+object Scoptions {
+  val Root: Scoptions = new Scoptions(null){}
+}
+
+trait ScoptionsPack {
+}
+
+trait PropertyPack {
 
   /**
     * Collection of properties, registered as dependent
     */
-  protected val registeredProperties = mutable.Map[String, PropertyLike[_]]()
+  protected val registeredProperties = mutable.Map[String, Property[_]]()
 
   /**
     * Allows to parse and apply command line arguments to all registered properties
@@ -63,14 +81,5 @@ abstract class Scoptions {
     val kv = argument.split("=")
     if (kv.length != 2) throw new IllegalArgumentException(s"$argument does not match pattern `key=value`")
     (kv(0), kv(1))
-  }
-
-  override def toString: String = {
-    var string = ""
-    // TODO: optimization
-    registeredProperties.foreach(p => {
-      string += s"${p._1}=${p._2} "
-    })
-    string
   }
 }
