@@ -16,6 +16,9 @@ abstract class Scoptions(val outerScope: Scoptions = Scoptions.Root, val name: S
     if (outerScope != Scoptions.Root) outerScope.registerSubScoptions(this)
   }
 
+  def applyArgument(argument: String): Boolean =
+    applyArgumentThere(argument) || applyArgumentInside(argument)
+
   /**
     * Properties defined in inherited classes use this value to register
     */
@@ -32,7 +35,7 @@ abstract class Scoptions(val outerScope: Scoptions = Scoptions.Root, val name: S
 }
 
 object Scoptions {
-  val Root: Scoptions = new Scoptions(null){}
+  val Root: Scoptions = new Scoptions(null) {}
 }
 
 trait ScoptionsPack {
@@ -45,6 +48,13 @@ trait ScoptionsPack {
       throw new IllegalArgumentException(s"That scoptions are already [${scoptions.name}]")
     registeredSubScoptions = registeredSubScoptions + (scoptions.name -> scoptions)
   }
+
+  def applyArgumentInside(argument: String): Boolean ={
+    registeredSubScoptions.values.foldLeft(false)((b: Boolean, sc :Scoptions) =>
+      b || sc.applyArgumentThere(argument) // was applied previously OR just now
+    )
+  }
+
 }
 
 trait PropertyPack {
@@ -56,25 +66,14 @@ trait PropertyPack {
 
   /**
     * Allows to parse and apply command line arguments to all registered properties
-    *
-    * @param arguments
     */
-  def applyArguments(arguments: List[String]): Unit = {
-    arguments.foreach(argument => {
-      val kv = parseArgument(argument)
-      if (!registeredProperties.contains(kv._1))
-        throw new NoSuchElementException(s"Unknown property `${kv._1}`")
+  def applyArgumentThere(argument: String): Boolean = {
+    val kv = parseArgument(argument)
+    if (registeredProperties contains kv._1) {
       registeredProperties(kv._1).fromString(kv._2)
-    })
+      true
+    } else false
   }
-
-  /**
-    * Just an alias for comfortable use
-    *
-    * @see applyArguments(arguments: List[String])
-    */
-  def applyArguments(arguments: String*): Unit =
-    applyArguments(arguments.toList)
 
   /**
     * Use this method in class constructor to define which properties should be managed by this class
