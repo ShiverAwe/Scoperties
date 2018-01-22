@@ -46,4 +46,9 @@ class OptionsSpec extends FlatSpec {
       }
     )
   }
+
+  it should "add nested scioptions" in {
+    val options = TestOptions()
+    assert(options.registeredSubScoptions contains "inner1")
+  }
 }

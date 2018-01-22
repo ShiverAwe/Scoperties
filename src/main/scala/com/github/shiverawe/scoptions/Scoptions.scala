@@ -9,7 +9,13 @@ import scala.collection.mutable
   *  - bind properties to be managed by Scoptions
   *  - parse and apply command line arguments to properties
   */
-abstract class Scoptions(val outerScope: Scoptions) extends PropertyPack with ScoptionsPack {
+abstract class Scoptions(val outerScope: Scoptions = Scoptions.Root, val name: String = "") extends PropertyPack with ScoptionsPack {
+
+  /* Constructor */
+  {
+    if (outerScope != Scoptions.Root) outerScope.registerSubScoptions(this)
+  }
+
   /**
     * Properties defined in inherited classes use this value to register
     */
@@ -30,6 +36,15 @@ object Scoptions {
 }
 
 trait ScoptionsPack {
+  val outerScope: ScoptionsPack
+
+  var registeredSubScoptions = Map[String, Scoptions]()
+
+  def registerSubScoptions(scoptions: Scoptions): Unit = {
+    if (registeredSubScoptions contains scoptions.name)
+      throw new IllegalArgumentException(s"That scoptions are already [${scoptions.name}]")
+    registeredSubScoptions = registeredSubScoptions + (scoptions.name -> scoptions)
+  }
 }
 
 trait PropertyPack {
