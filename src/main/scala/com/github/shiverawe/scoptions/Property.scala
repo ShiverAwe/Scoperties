@@ -1,11 +1,43 @@
 package com.github.shiverawe.scoptions
 
-trait Property[P] {
+abstract class Property[P] extends PropertyLike[P] {
+  val target: Option[Scoptions]
+
+  /* Constructor */
+  {
+    if (target.isDefined) target.get.registerProperties(this)
+  }
+}
+
+case class PropertyS(key: String, default: String = "")(implicit val target: Option[Scoptions]) extends Property[String] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string
+}
+
+case class PropertyI(key: String, default: Int = 0)(implicit val target: Option[Scoptions]) extends Property[Int] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toInt
+}
+
+case class PropertyF(key: String, default: Float = 0)(implicit val target: Option[Scoptions]) extends Property[Float] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toFloat
+}
+
+case class PropertyL(key: String, default: Long = 0)(implicit val target: Option[Scoptions]) extends Property[Long] {
+  override val contentType = "String"
+
+  override def deserialize(string: String) = string.toLong
+}
+
+trait PropertyLike[P] {
 
   val key: String
   val default: P
   var value: Option[P] = None
-  val target: Option[Scoptions]
   val contentType: String
 
   /**
@@ -65,3 +97,7 @@ trait Property[P] {
   def isDefault(): Boolean =
     apply() == default
 }
+
+
+
+

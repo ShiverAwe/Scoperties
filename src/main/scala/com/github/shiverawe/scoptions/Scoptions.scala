@@ -19,7 +19,7 @@ abstract class Scoptions {
   /**
     * Collection of properties, registered as dependent
     */
-  protected val registeredProperties = mutable.Map[String, Property[_]]()
+  protected val registeredProperties = mutable.Map[String, PropertyLike[_]]()
 
   /**
     * Allows to parse and apply command line arguments to all registered properties
