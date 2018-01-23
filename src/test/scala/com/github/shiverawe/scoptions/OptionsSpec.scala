@@ -1,4 +1,4 @@
-package scoptions
+package com.github.shiverawe.scoptions
 
 import org.scalatest.FlatSpec
 
@@ -34,7 +34,7 @@ class OptionsSpec extends FlatSpec {
     )
   }
 
-  it should "add nested scoptions" in {
+  it should "add nested com.github.shiverawe.scoptions" in {
     val options = TestOptions()
     assert(options.registeredSubScoptions contains "inner1")
   }

@@ -1,4 +1,4 @@
-package scoptions
+package com.github.shiverawe.scoptions
 
 import org.scalatest.{FlatSpec, Ignore}
 
@@ -22,7 +22,5 @@ class Demo extends FlatSpec {
     println(testOptions.host()) // get value
     println(testOptions.host) // toString
     testOptions.port := 17 // set new value
-    println(testOptions.port() == 17) //true
-    println(testOptions.port() == 58) //false
   }
 }

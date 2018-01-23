@@ -3,9 +3,12 @@ package com.github.shiverawe.scoptions
 abstract class Property[P] extends PropertyLike[P] {
   val target: Option[PropertyPack]
 
+  protected def registerIn(target: PropertyPack): Unit =
+    target.registerProperties(this)
+
   /* Constructor */
   {
-    if (target.isDefined) target.get.registerProperties(this)
+    if (target.isDefined) registerIn(target.get)
   }
 }
 
@@ -31,6 +34,12 @@ case class PropertyL(key: String, default: Long = 0)(implicit val target: Option
   override val contentType = "Long"
 
   override def deserialize(string: String) = string.toLong
+}
+
+case class PropertyB(key: String, default: Boolean)(implicit val target: Option[PropertyPack]) extends Property[Boolean] {
+  override val contentType = "Boolean"
+
+  override def deserialize(string: String) = string.toBoolean
 }
 
 trait PropertyLike[P] {
@@ -83,6 +92,11 @@ trait PropertyLike[P] {
 
   def deserialize(string: String): P
 
+  def equals(a: P, b: P): Boolean =
+    a == b
+
+  def disassembly: String = { s"$key=${get()}" }
+
   /**
     * Sets effective value to default
     */
@@ -96,6 +110,7 @@ trait PropertyLike[P] {
     */
   def isDefault(): Boolean =
     apply() == default
+
 }
 
 

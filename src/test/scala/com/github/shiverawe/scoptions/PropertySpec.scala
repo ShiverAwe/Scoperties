@@ -1,4 +1,4 @@
-package scoptions
+package com.github.shiverawe.scoptions
 
 import com.github.shiverawe.scoptions.{PropertyLike, PropertyS}
 import org.scalatest.FlatSpec
