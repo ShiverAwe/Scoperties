@@ -18,9 +18,9 @@ class Demo extends FlatSpec {
   "DEMO2" should "show you how it works" in {
 
     val testOptions = TestOptions()
-    testOptions.host := "newhost" // almost `=`
-    println(testOptions.host()) // get value
-    println(testOptions.host) // toString
-    testOptions.port := 17 // set new value
+    testOptions.string := "newhost" // almost `=`
+    println(testOptions.string()) // get value
+    println(testOptions.string) // toString
+    testOptions.integer := 17 // set new value
   }
 }

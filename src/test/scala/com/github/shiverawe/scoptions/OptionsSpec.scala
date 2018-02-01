@@ -7,23 +7,22 @@ class OptionsSpec extends FlatSpec {
     val options = TestOptions()
 
     List(
-      "host=newhost",
-      "port=8123",
-      "mode=test",
-      "username=George"
+      "string=new_string",
+      "integer=789",
+      "istring=new_inner_string",
+      "ifloat=23.45"
     ).foreach(options.applyArgument)
 
-    assert(options.host() == "newhost")
-    assert(options.port() == 8123)
-    assert(options.mode() == "test")
-    assert(options.inner.username() == "George")
+    assert(options.string() == "new_string")
+    assert(options.integer() == 789)
+    assert(options.inners.istring() == "new_inner_string")
+
   }
 
   it should "throw exception when trying to apply incorrect argument" in {
     val incorrects = List(
       "singleword",
-      "key=value=lolwhat",
-      "" //empty,
+      "key=value=lolwhat"
     )
 
     val options = TestOptions()
@@ -36,6 +35,6 @@ class OptionsSpec extends FlatSpec {
 
   it should "add nested com.github.shiverawe.scoptions" in {
     val options = TestOptions()
-    assert(options.registeredSubScoptions contains "inner1")
+    assert(options.registeredSubScoptions contains "inner")
   }
 }

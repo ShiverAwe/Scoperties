@@ -51,8 +51,9 @@ abstract class Scoptions(val outerScope: Scoptions = Scoptions.ROOT_UNDEFINED, v
 
   //--------------------------------CONSTRUCTOR-------------------------
   {
-    if (outerScope != Scoptions.ROOT_UNDEFINED
-      && outerScope != Scoptions.ROOT_DEFINED) outerScope.registerSubScoptions(this)
+    if (outerScope != Scoptions.ROOT_UNDEFINED &&
+      outerScope != Scoptions.ROOT_DEFINED)
+      outerScope.registerSubScoptions(this)
   }
 }
 
@@ -100,7 +101,6 @@ trait PropertyPack {
     if (argument == "") return true // TODO VShefer 25 jan: Its a hack. "" means no argument. Need to use Option with None
     val kv = parseArgument(argument)
     if (registeredProperties contains kv._1) {
-      println(s"Trying to apply $argument")
       registeredProperties(kv._1).fromString(kv._2)
       true
     } else false
@@ -134,7 +134,6 @@ trait PropertyPack {
     if (pos < 0) throw new IllegalArgumentException(s"$argument does not match pattern `key=value`: No delimiter `$delimiter` found")
     val key = argument.substring(0, pos)
     val value = argument.substring(pos + delimiter.length)
-    //println((key, value))
     (key, value)
   }
 }
