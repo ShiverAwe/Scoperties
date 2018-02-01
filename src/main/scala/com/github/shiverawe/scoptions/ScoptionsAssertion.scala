@@ -3,13 +3,11 @@ package com.github.shiverawe.scoptions
 trait ScoptionsAssertion{
   def param(key: String, value: String) = s"$key=$value"
 
-  def assertApplied[P](key: String, value: P, property: Property[P])(implicit options: Scoptions): Unit = {
-    val strvalue = property.serialize(value)
-    options.applyArgument(param(key, strvalue))
-    val result = property.get()
-    val strresult = property.serialize(result)
+  def assertApplied[P](key: String, value: P, property: PropertyLike[P])(implicit options: Scoptions): Unit = {
+    options.applyArgument(param(key, property.serializeContent(value)))
+    val result = property.getContent()
     if (!property.equals(value, result)) throw new AssertionError(
-      s"Argument `$key` was not applied. Expected: `$strvalue`. Actual: `$strresult`.")
+      s"Argument `$key` was not applied. Expected: `${property.serializeContent(value)}`. Actual: `${property.serializeContent(result)}`.")
   }
 
   def assertAppliedS(key: String, property: Property[String])(implicit options: Scoptions) = {

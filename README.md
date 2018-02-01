@@ -6,9 +6,9 @@ Scala properties
 #### Definition example
 ```scala
 case class TestOptions() extends Scoptions {
-  val host: Property = Property("host", "localhost")
-  val port: Property = Property("port", "7345")
-  val mode: Property = Property("mode", "production")
+  val host: Property = PropertyS("host", "localhost")
+  val port: Property = PropertyS("port", "7345")
+  val mode: Property = PropertyS("mode", "production")
 }
 ```
 Defining `Property` in `Scoptions` automaticly wires them.
@@ -30,11 +30,6 @@ mode=test host=newhost port=7345
 #### Using properties as common variables
 ```scala
 val testOptions = TestOptions()
-testOptions.host := "newhost" // Sets value instead of `=`
-testOptions.host()            // Get value
-testOptions.host              // toString-ed value
-testOptions.host == "newhost" // true
-testOptions.host == "dsfksdf" // false
-testOptions.host != "newhost" // false
-testOptions.host != "nzhfuid" // true
+testOptions.host.set("newhost")// Sets value instead of `=`
+testOptions.host()             // Get value
 ```
