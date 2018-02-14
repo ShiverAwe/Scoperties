@@ -1,7 +1,5 @@
 package com.github.shiverawe.scoptions
 
-import com.github.shiverawe.scoptions._
-
 case class TestOptions() extends Scoptions {
   val string = PropertyS("string") // Default value == ""
   val integer = PropertyI("integer") // Default value == 0

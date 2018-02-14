@@ -21,8 +21,7 @@ class OptionsSpec extends FlatSpec {
 
   it should "throw exception when trying to apply incorrect argument" in {
     val incorrects = List(
-      "singleword",
-      "key=value=lolwhat"
+      "singleword"
     )
 
     val options = TestOptions()

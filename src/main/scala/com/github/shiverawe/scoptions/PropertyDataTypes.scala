@@ -60,16 +60,6 @@ case class PropertyHolder[P <: Any](key: String, default: P)(implicit val target
   override def disassembly: String = "" // See http://bd-repo.barsum.ru/mkasatkin/bigdata/issues/328#note_8443
 }
 
-//case class PropertyRedis(key: String, default: String)(implicit val target: Option[PropertyPack]) extends Property[String] {
-//  override val contentType = "Redis"
-//
-//  override def getContent(): String = ConfigClient.get(key, default)
-//
-//  def redisPath: String = ConfigClient.redisPath(getContent())
-//
-//  override def deserialize(string: String): String = string
-//}
-
 case class PropertyEnum[P <: Enumeration](key: String, defaultValueOfEnum: Any, val enum: P)(implicit val target: Option[PropertyPack]) extends Property[String] {
   override val contentType = "Enumeration"
 

@@ -1,14 +1,15 @@
 # Scoptions
-Scala properties
+Scala application options
 
-## Examples
+## Fast start
 
-#### Definition example
+#### Introducing scoptions
+Value properties 
 ```scala
 case class TestOptions() extends Scoptions {
-  val host: Property = PropertyS("host", "localhost")
-  val port: Property = PropertyS("port", "7345")
-  val mode: Property = PropertyS("mode", "production")
+  val host: = PropertyS("host", "localhost")
+  val port: = PropertyI("port", 7345)
+  val length: = PropertyF("mode", 45.56)
 }
 ```
 Defining `Property` in `Scoptions` automaticly wires them.
