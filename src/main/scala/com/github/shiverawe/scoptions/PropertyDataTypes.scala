@@ -1,4 +1,5 @@
 package com.github.shiverawe.scoptions
+
 import scala.concurrent.duration.FiniteDuration
 
 case class PropertyS(key: String, default: String = "")(implicit val target: Option[PropertyPack]) extends Property[String] {

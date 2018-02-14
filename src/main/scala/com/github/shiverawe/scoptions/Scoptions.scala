@@ -7,8 +7,9 @@ import scala.collection.mutable
   *  - bind properties to be managed by Scoptions
   *  - parse and apply command line arguments to properties
   */
-abstract class Scoptions(val outerScope: Scoptions = Scoptions.ROOT_UNDEFINED, val name: String = "") extends PropertyPack with ScoptionsPack {
-
+abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extends PropertyPack with ScoptionsPack {
+  val outerScope: ScoptionsPack = parent.outerScope
+  val name: String = parent.name
   /**
     * Properties defined in inherited classes use this value to register
     */
@@ -58,8 +59,10 @@ abstract class Scoptions(val outerScope: Scoptions = Scoptions.ROOT_UNDEFINED, v
 }
 
 object Scoptions {
-  val ROOT_UNDEFINED: Scoptions = new Scoptions(null, name = "GLOBAL_SCOPTIONS_ROOT_UNDEFINED") {}
-  val ROOT_DEFINED: Scoptions = new Scoptions(null, name = "GLOBAL_SCOPTIONS_ROOT") {}
+  val ROOT_UNDEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT_UNDEFINED")) {}
+  val ROOT_DEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT")) {}
+  val WIRING_UNDEFINED: Wiring = Wiring(ROOT_UNDEFINED)
+  val WIRING_DEFINED  : Wiring = Wiring(ROOT_DEFINED)
 }
 
 trait ScoptionsPack {

@@ -7,13 +7,13 @@ import org.scalatest.FlatSpec
   * Scoptions class has `copyFrom` method which allows to copy all references
   * from one instance to another.
   */
-class ScoptionsCopySpec extends FlatSpec{
+class ScoptionsCopySpec extends FlatSpec {
 
-  case class OuterScoptions () extends Scoptions {
-    val inner = InnerScoptions(outerScope = this, name = "inner")
+  case class OuterScoptions() extends Scoptions {
+    val inner = InnerScoptions(Wiring(outerScope = this, name = "inner"))
   }
 
-  case class InnerScoptions(override val outerScope: Scoptions, override val name: String) extends Scoptions(outerScope, name) {
+  case class InnerScoptions(override val parent: Wiring) extends Scoptions(parent) {
     val property = PropertyS("inner_property", "default_value")
   }
 
@@ -25,6 +25,6 @@ class ScoptionsCopySpec extends FlatSpec{
 
     another.copyFrom(original)
 
-    assert (another.inner.property.get() == "new_value")
+    assert(another.inner.property.get() == "new_value")
   }
 }

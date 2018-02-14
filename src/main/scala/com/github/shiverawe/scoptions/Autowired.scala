@@ -1,13 +1,13 @@
 package com.github.shiverawe.scoptions
 
-class Wiring
+case class Wiring
 (
-  val outerScope: ScoptionsPack = Scoptions.ROOT_DEFINED,
-  val name: String = ""
+  outerScope: ScoptionsPack = Scoptions.ROOT_DEFINED,
+  name: String = ""
 ) {}
 
 object Autowired {
-  def apply(name: String)(implicit outerScope: ScoptionsPack): Wiring = {
-    new Wiring(outerScope, name)
+  def apply(name: String)(implicit target: ScoptionsPack): Wiring = {
+    new Wiring(target, name)
   }
 }
