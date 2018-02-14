@@ -7,7 +7,10 @@ case class Wiring
 ) {}
 
 object Autowired {
-  def apply(name: String)(implicit target: ScoptionsPack): Wiring = {
-    new Wiring(target, name)
+  def apply(name: String)(implicit target: Option[ScoptionsPack]): Wiring = {
+    if (target.isDefined)
+      Wiring(outerScope = target.get, name = name)
+    else
+      Wiring(name = name)
   }
 }

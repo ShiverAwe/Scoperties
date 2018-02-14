@@ -5,7 +5,7 @@ case class TestOptions() extends Scoptions {
   val integer = PropertyI("integer") // Default value == 0
   val float = PropertyF("float") // Defalult value == 0.0
 
-  val inners = InnerOptions(Wiring(this, name = "inner"))
+  val inners = InnerOptions(Autowired(name = "inner"))
 }
 
 case class InnerOptions(override val parent: Wiring) extends Scoptions(parent) {

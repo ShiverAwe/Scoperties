@@ -13,7 +13,7 @@ abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extend
   /**
     * Properties defined in inherited classes use this value to register
     */
-  implicit val target: Option[PropertyPack] = Some(this)
+  implicit val target: Option[Scoptions] = Some(this)
 
   def applyArgument(argument: String): Boolean = {
     applyArgumentThere(argument) || applyArgumentInside(argument)
@@ -25,7 +25,7 @@ abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extend
 
   def copyFromThere(source: Scoptions): this.type = {
     source.registeredProperties.keys.foreach(key => {
-      registeredProperties.get(key).get.setContent(
+      registeredProperties(key).setContent(
         source.registeredProperties(key).getContent())
     })
     this
@@ -62,7 +62,7 @@ object Scoptions {
   val ROOT_UNDEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT_UNDEFINED")) {}
   val ROOT_DEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT")) {}
   val WIRING_UNDEFINED: Wiring = Wiring(ROOT_UNDEFINED)
-  val WIRING_DEFINED  : Wiring = Wiring(ROOT_DEFINED)
+  val WIRING_DEFINED: Wiring = Wiring(ROOT_DEFINED)
 }
 
 trait ScoptionsPack {
