@@ -10,7 +10,7 @@ import org.scalatest.FlatSpec
 class ScoptionsCopySpec extends FlatSpec {
 
   case class OuterScoptions() extends Scoptions {
-    val inner = InnerScoptions(Wiring(outerScope = this, name = "inner"))
+    val inner = InnerScoptions(Wiring(target = this, name = "inner"))
   }
 
   case class InnerScoptions(override val parent: Wiring) extends Scoptions(parent) {

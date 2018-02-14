@@ -8,10 +8,21 @@ import scala.collection.mutable
   *  - parse and apply command line arguments to properties
   */
 abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extends PropertyPack with ScoptionsPack {
-  val outerScope: ScoptionsPack = parent.outerScope
-  val name: String = parent.name
+
   /**
-    * Properties defined in inherited classes use this value to register
+    * Parent scope.
+    * Parent scope manages lifecycle of
+    */
+  val outerScope: Scoptions = parent.target
+
+  /**
+    * Name of the instance of scoptions.
+    * Name should be unique in parent scope.
+    */
+  val name: String = parent.name
+
+  /**
+    * Properties and subscoptions defined in inherited classes use this value to register
     */
   implicit val target: Option[Scoptions] = Some(this)
 
@@ -20,24 +31,11 @@ abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extend
   }
 
   def copyFrom(source: Scoptions): this.type = {
-    copyFromThere(source).copyFromInside(source)
-  }
-
-  def copyFromThere(source: Scoptions): this.type = {
-    source.registeredProperties.keys.foreach(key => {
-      registeredProperties(key).setContent(
-        source.registeredProperties(key).getContent())
-    })
+    copySubScoptionsFrom(source)
+    copyPropertiesFrom(source)
     this
   }
 
-  def copyFromInside(source: Scoptions): this.type = {
-    this.registeredSubScoptions.keys.foreach(key => {
-      this.registeredSubScoptions(key).copyFromThere(
-        source.registeredSubScoptions(key))
-    })
-    this
-  }
 
   def disassembly: Seq[String] = {
     disassemblyThere() ++ disassemblyInside()
@@ -66,7 +64,7 @@ object Scoptions {
 }
 
 trait ScoptionsPack {
-  val outerScope: ScoptionsPack
+  self: Scoptions =>
 
   var registeredSubScoptions = Map[String, Scoptions]()
 
@@ -76,13 +74,21 @@ trait ScoptionsPack {
     registeredSubScoptions = registeredSubScoptions + (scoptions.name -> scoptions)
   }
 
-  def applyArgumentInside(argument: String): Boolean = {
-    registeredSubScoptions.values.foldLeft(false)((b: Boolean, inner: Scoptions) =>
-      b || inner.applyArgument(argument) // was applied previously OR just now OR inside
+
+  protected def applyArgumentInside(argument: String): Boolean = {
+    registeredSubScoptions.values.foldLeft(false)((alreadyApplied: Boolean, inner: Scoptions) =>
+      alreadyApplied || inner.applyArgument(argument) // was applied previously OR just now OR inside
     )
   }
 
-  def disassemblyInside(): Seq[String] = {
+  protected def copySubScoptionsFrom(source: Scoptions): Unit = {
+    this.registeredSubScoptions.keys.foreach(key => {
+      this.registeredSubScoptions(key).copyFrom(
+        source.registeredSubScoptions(key))
+    })
+  }
+
+  protected def disassemblyInside(): Seq[String] = {
     registeredSubScoptions.values.foldLeft(Seq[String]()) { (seq: Seq[String], inner: Scoptions) =>
       seq ++ inner.disassembly
     }
@@ -90,12 +96,12 @@ trait ScoptionsPack {
 }
 
 trait PropertyPack {
+  self: Scoptions =>
+
   /**
     * Collection of properties, registered as dependent
     */
   protected val registeredProperties = mutable.Map[String, PropertyLike[_]]()
-
-  val name: String
 
   /**
     * Allows to parse and apply command line arguments to all registered properties
@@ -117,12 +123,17 @@ trait PropertyPack {
     *
     * @param properties properties to be managed by this class
     */
-  def registerProperties(properties: PropertyLike[_]*) =
-    properties.foreach(p => {
-      // TODO delete debug output
-      //println(s"Registering ${p.key}")
+  def registerProperties(properties: PropertyLike[_]*): Unit =
+    properties.foreach(p =>
       registeredProperties += (p.key -> p)
+    )
+
+  protected def copyPropertiesFrom(source: Scoptions): Unit = {
+    source.registeredProperties.keys.foreach(key => {
+      registeredProperties(key).setContent(
+        source.registeredProperties(key).getContent())
     })
+  }
 
   /**
     * Splits a command line argument into key-value pair
