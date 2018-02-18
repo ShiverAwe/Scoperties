@@ -2,8 +2,9 @@ package com.github.shiverawe.scoptions
 
 import org.scalatest.FlatSpec
 
-class OperatorAliacesSpec extends FlatSpec{
-  case class TestScoptions () extends Scoptions() {
+class OperatorAliacesSpec extends FlatSpec {
+
+  case class TestScoptions() extends Scoptions() {
     val property = PropertyS(key = "string_property", default = "default_value")
   }
 

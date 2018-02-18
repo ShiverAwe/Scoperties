@@ -7,7 +7,7 @@ import scala.collection.mutable
   *  - bind properties to be managed by Scoptions
   *  - parse and apply command line arguments to properties
   */
-abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extends PropertyPack with ScoptionsPack {
+abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED("UNKNOWN")) extends PropertyPack with ScoptionsPack {
 
   /**
     * Parent scope.
@@ -57,10 +57,13 @@ abstract class Scoptions(val parent: Wiring = Scoptions.WIRING_UNDEFINED) extend
 }
 
 object Scoptions {
-  val ROOT_UNDEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT_UNDEFINED")) {}
-  val ROOT_DEFINED: Scoptions = new Scoptions(Wiring(null, name = "GLOBAL_SCOPTIONS_ROOT")) {}
-  val WIRING_UNDEFINED: Wiring = Wiring(ROOT_UNDEFINED)
-  val WIRING_DEFINED: Wiring = Wiring(ROOT_DEFINED)
+  val ROOT_UNDEFINED: Scoptions = new Scoptions(Wiring(name = "GLOBAL_SCOPTIONS_ROOT_UNDEFINED", null)) {}
+  val ROOT_DEFINED: Scoptions = new Scoptions(Wiring(name = "GLOBAL_SCOPTIONS_ROOT", null)) {}
+
+  def WIRING_DEFINED(name: String) = Wiring(name, ROOT_DEFINED)
+
+  def WIRING_UNDEFINED(name: String) = Wiring(name, ROOT_UNDEFINED)
+
 }
 
 trait ScoptionsPack {
@@ -73,7 +76,6 @@ trait ScoptionsPack {
       throw new IllegalArgumentException(s"That scoptions are already [${scoptions.name}]")
     registeredSubScoptions = registeredSubScoptions + (scoptions.name -> scoptions)
   }
-
 
   protected def applyArgumentInside(argument: String): Boolean = {
     registeredSubScoptions.values.foldLeft(false)((alreadyApplied: Boolean, inner: Scoptions) =>
@@ -136,7 +138,7 @@ trait PropertyPack {
   }
 
   /**
-    * Splits a command line argument into key-value pair
+    * Splits a command line argument into key-value tuple
     *
     * @param argument command line argument
     * @return (key, value) tuple
